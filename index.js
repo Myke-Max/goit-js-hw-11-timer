@@ -36,7 +36,9 @@ class CountdownTimer {
     }
     stop() {
             clearInterval(this.myInterval)
-            this.isActive = false
+        this.isActive = false
+        const time = this.getTimeComponents(0);
+        this.clockFace(time)
         }
         //  calculation formulas
 
@@ -66,10 +68,32 @@ function updateClockFace({ days, hours, mins, secs }) {
     refs.minutesValue.textContent = mins
     refs.secondsValue.textContent = secs
 }
+function onBgImgChange() {
+    let today = new Date()
+   let hour = today.getHours()
+    
+    if (hour <= 12) {
+        document.body.style.backgroundImage = "url('./img/morning.jpg')"
+         document.body.style.color = '	#bfff00'
+        
+        
+    } else if (hour <= 22) {
+        document.body.style.backgroundImage = "url('./img/evening.jpg')"
+        document.body.style.color = '#B0E0E6'
+        
+        
+    } else {
+        document.body.style.backgroundImage = "url('./img/night.jpg')"
+
+        document.body.style.color = '#fff'
+       
+    }
+}
 
 
 
 // Run
-refs.startBtn.addEventListener('click', timer.start.bind(timer))
+refs.startBtn.addEventListener('click', timer.start.bind(timer));
+refs.startBtn.addEventListener('click',onBgImgChange)
 
 refs.stopBtn.addEventListener('click', timer.stop.bind(timer))

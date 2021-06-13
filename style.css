@@ -1,0 +1,46 @@
+body {
+  background-image: url("./img/6308.jpg");
+  background-size: cover;
+  font-family: "Mate SC", serif;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  margin-top: 150px;
+}
+
+button {
+  background-color: #00bfff;
+  border: none;
+  border-radius: 18%;
+  color: white;
+  padding: 20px 44px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  cursor: pointer;
+  margin-top: 100px;
+  margin-right: 100px;
+}
+.timer {
+  display: flex;
+  justify-content: center;
+  margin: -30px;
+}
+.field {
+  margin: 30px;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+}
+
+.value {
+  font-size: 100px;
+}
+
+.label {
+  font-size: 50px;
+  margin-left: 10px;
+}
