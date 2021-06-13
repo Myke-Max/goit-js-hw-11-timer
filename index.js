@@ -1,40 +1,63 @@
 const refs = {
     startBtn: document.querySelector('[data-action="start"]'),
-    stopBtn:document.querySelector('[data-action="stop"]'),
+    stopBtn: document.querySelector('[data-action="stop"]'),
     daysValue: document.querySelector('[ data-value="days"]'),
     hoursValue: document.querySelector('[data-value="hours"]'),
     minutesValue: document.querySelector('[data-value="mins"]'),
     secondsValue: document.querySelector('[data-value="secs"]'),
 }
 
+class CountdownTimer {
+    constructor({ selector, clockFace, targetDate }) {
+        this.isActive = false,
+            this.myInterval = null,
+            this.clockFace = clockFace
+        this.targetDate = targetDate
 
-
-
-const timer = {
-    
-    start() {
-        const startTime = new Date("Sep 5, 2021 15:00:00").getTime();
-        let isActive = false;
-        let myInterval = null;
-        if (!isActive) {
-            myInterval = setInterval(() => {
-            const currentTime = new Date().getTime()
-            const countdownTime = startTime - currentTime;
-
-                const { days, hours, mins, secs } = getTimeComponents(countdownTime);
-                console.log(`${days}:${hours}:${mins}:${secs}`)
-        
-            isActive = true
-        },1000)
-        }
-    },
-    stop() {
-        clearInterval(myInterval)
     }
-    
+    start() {
+
+
+        if (!this.isActive) {
+            this.myInterval = setInterval(() => {
+                const currentTime = new Date().getTime()
+                const countdownTime = this.targetDate - currentTime;
+
+                const time = this.getTimeComponents(countdownTime);
+
+                this.clockFace(time)
+                this.isActive = true
+            }, 1000)
+        }
+    }
+    stop() {
+            clearInterval(this.myInterval)
+            this.isActive = false
+        }
+        //  calculation formulas
+
+    getTimeComponents(time) {
+            const days = this.addZero(Math.floor(time / (1000 * 60 * 60 * 24)));
+            const hours = this.addZero(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+            const mins = this.addZero(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+            const secs = this.addZero(Math.floor((time % (1000 * 60)) / 1000));
+
+            return { days, hours, mins, secs }
+        }
+        // add zero to timer
+    addZero(n) {
+        return (parseInt(n, 10) < 10 ? '0' : '') + n
+    }
 }
 
-const updateClockFace = ({days,hours,mins,secs}) => {
+const timer = new CountdownTimer({
+    selector: '#timer-1',
+    targetDate: new Date('Jul 17, 2022'),
+    clockFace: updateClockFace,
+});
+
+
+function updateClockFace({ days, hours, mins, secs }) {
     refs.daysValue.textContent = days
     refs.hoursValue.textContent = hours
     refs.minutesValue.textContent = mins
@@ -42,26 +65,8 @@ const updateClockFace = ({days,hours,mins,secs}) => {
 }
 
 
-//  calculation formulas
-
-const getTimeComponents =(time) => {
-    const days = addZero(Math.floor(time / (1000 * 60 * 60 * 24)));
-    const hours =addZero( Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-    const mins = addZero(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-    const secs = addZero(Math.floor((time % (1000 * 60)) / 1000));
-    
-    return {days,hours,mins,secs}
-}
-// add zero to timer
-const addZero = (n) => {
-    return (parseInt(n, 10) < 10 ? '0' : '') + n
-}
 
 // Run
-refs.startBtn.addEventListener('click', () => {
-    timer.start()
-})
+refs.startBtn.addEventListener('click', timer.start.bind(timer))
 
-refs.stopBtn.addEventListener('click', () => {
- timer.stop()
-})
+refs.stopBtn.addEventListener('click', timer.stop.bind(timer))
