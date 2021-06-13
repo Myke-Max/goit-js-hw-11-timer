@@ -8,15 +8,19 @@ const refs = {
 }
 
 class CountdownTimer {
-    constructor({ selector, clockFace, targetDate }) {
+    constructor({ clockFace, targetDate }) {
         this.isActive = false,
             this.myInterval = null,
             this.clockFace = clockFace
         this.targetDate = targetDate
+        this.initialTime()
+    }
 
+    initialTime() {
+        const time = this.getTimeComponents(0);
+        this.clockFace(time)
     }
     start() {
-
 
         if (!this.isActive) {
             this.myInterval = setInterval(() => {
@@ -51,8 +55,7 @@ class CountdownTimer {
 }
 
 const timer = new CountdownTimer({
-    selector: '#timer-1',
-    targetDate: new Date('Jul 17, 2022'),
+    targetDate: new Date('Jul 17, 2021'),
     clockFace: updateClockFace,
 });
 
